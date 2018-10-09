@@ -1,0 +1,114 @@
+1) List the commands for adding, updating, and deleting data.
+    A: INSERT INTO..., UPDATE... SET... WHERE..., DELETE FROM... WHERE..., ALTER TABLE... ADD COLUMN..., ALTER TABLE... DROP COLUMN...
+
+2) Explain the structure for each type of command.
+    A: You first mention what action you want to take (delete, alter, etc), then you pick which table you want, 
+
+3) What are some of the data types that can be used in tables? Give a real-world example of each type.
+    A: There are over forty data types that you can use in tables.  Integer, text, and numeric are just a few data types.  
+    You can use integer for ID #'s, numeric for monetary values, and text for descriptions.
+
+4) Decide how to create a new table to hold a list of people invited to a wedding dinner. The table needs to have first and last names, whether they sent in their RSVP, the number of guests they are bringing, and the number of meals (1 for adults and 1/2 for children).
+    A:  CREATE TABLE wedding(
+            firstName text,
+            lastName text,
+            rsvp boolean,
+            guests integer,
+            meals numeric(1,1)
+        )
+    -Which data type would you use to store each of the following pieces of information?
+        First and last name.
+        A: Text
+        Whether they sent in their RSVP.
+        A: Boolean
+        Number of guests.
+        A: Integer
+        Number of meals.
+        A: Numeric (5, 1)
+
+    -Write a command that creates the table to track the wedding dinner.
+        A:  CREATE TABLE weddingDinner(
+                dinnersNeeded numeric(5, 1),
+                dinnersOrdered numeric(5,1)
+            );
+
+    -Write a command that adds a column to track whether the guest sent a thank you card.
+        A:  ALTER TABLE wedding ADD COLUMN thankYouCard boolean;
+    
+    -You have decided to move the data about the meals to another table, so write a command to remove the column storing the number meals from the wedding table.
+        A:  ALTER TABLE weddingDinner DROP COLUMN dinnersNeeded;
+            ALTER TABLE weddingDinner DROP COLUMN dinnersOrdered;
+
+    -The guests will need a place to sit at the reception, so write a command that adds a column for table number.
+        A:  ALTER TABLE wedding ADD COLUMN tableNumber integer;
+    
+    -The wedding is over and we do not need to keep this information, so write a command that deletes the table numbers from the database.
+        A:  ALTER TABLE wedding DROP COLUMN tableNumber;
+    
+5) Write a command to create a new table to hold the books in a library with the columns ISBN, title, author, genre, publishing date, number of copies, and available copies.
+    CREATE TABLE books(
+        ISBN text, **I said text because it has dashes as well as numbers**
+        title text,
+        author text, 
+        genre text,
+        publishDate date,
+        copies integer,
+        availableCopies integer
+    )
+    -Find three books and add their information to the table.
+    A:  INSER INTO books(ISBN, title, author, genre, publishDate, copies, availableCopies)
+        VALUES
+        ("9-102-36-5267", "Fake Book", "Tony the Tiger", "Self Help", 10/02/1975, 10, 3),
+        ("65465-56872-1", "Red Fish, Blue Fish, Dead Fish, Flu Fish", "Dr. Oz", "Children", 10/24/1874, 1, 0),
+        ("78-542-88-231", "Unleash your inner sloth", "My Crazy Aunt", "Erotica", 10/24/1956, 97, 0)
+
+
+    -Someone has just checked out one of the books. Change the number of available copies to 1 fewer.
+    A:  UPDATE books SET availableCopies=2 WHERE ISBN="9-102-36-5267";
+
+    -Now one of the books has been added to the banned books list. Remove it from the table.
+    A:  DELETE FROM books WHERE ISBN="78-542-88-231";
+
+6) Write a command to make a new table to hold spacecrafts. Information should include id, name, year launched, country of origin, a brief description of the mission, orbiting body, if it is currently operating, and its approximate miles from Earth. In addition to the table creation, provide commands that perform the following operations:
+    A:  CREATE TABLE spacecrafts(id integer, 
+            name text, 
+            yearLaunched integer, 
+            countryOrigin text, 
+            description text, 
+            orbitingWhat text, 
+            operating boolean, 
+            milesFromEarth integer)
+    -Add three non-Earth-orbiting satellites to the table.
+     A: INSERT INTO spacecrafts(100, "Hubble Telescope", 1990, U.S., "Telescopein in space", "Earth", true, 340)
+        INSERT INTO spacecrafts(001, "Sputnik 1", 1957, "First artificial satellite", "Earth", false, 142)
+        INSERT INTO spacecrafts(002, "Sputnik 2", 1957, "Second artificial satellite", "Earth", false, 150)
+    
+    -Remove one of the satellites from the table since it has just crashed into the planet.
+    A: DELETE FROM spacecrafts WHERE id=002;
+
+    -Edit another satellite because it is no longer operating and change the value to reflect that.
+    A:  UPDATE spacecrafts SET operating=false WHERE id=100;
+
+7) Write a command to create a new table to hold the emails in your inbox. This table should include an id, the subject line, the sender, any additional recipients, the body of the email, the timestamp, whether or not you have read the email, and the id of the email chain it's in. Also provide commands that perform the following operations:
+    CREATE TABLE emails(
+        id integer,
+        subjectLine text,
+        sender text,
+        recipients text,
+        body text,
+        timestamp time,
+        read boolean,
+        chainID integer
+    )
+    
+    -Add three new emails to the inbox.
+    A: INSERT INTO emails VALUES(1, "hello, World!", "Jane", "Ryan", "body of email", 1111111, false, 2),
+        (3, "hi", "bob", "Jimmy", "body", 2222222, true, 1),
+        (4, "Hey", "Tim", "Mike", "Hey Mike", 3333333, false, 1);
+
+    -You deleted one of the emails, so write a command to remove the row from the inbox table.
+    A: delete from emails where id=4;
+
+    -You started reading an email but just heard a crash in another room. Mark the email as unread before investigating the crash, so you can come back and read it later.
+    A: update emails set didRead=false where id=3;
+    
